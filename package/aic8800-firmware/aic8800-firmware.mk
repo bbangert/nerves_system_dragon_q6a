@@ -40,8 +40,7 @@ AIC8800_FIRMWARE_LICENSE_FILES = LICENSE debian/copyright
 # `make legal-info` source dumps. The blobs carry no standalone license
 # text -- all that is actually established is that Radxa publish them in a
 # public GPL-3.0 repo and ship them in their own images, which is not an
-# explicit redistribution grant (see the licensing note in the vagus repo's
-# plan research). package/aic8800 sets the same, because it downloads the
+# explicit redistribution grant. package/aic8800 sets the same, because it downloads the
 # SAME tarball: leaving that one at the default YES would put the identical
 # bytes into a legal-info dump through the other package and make this
 # setting pointless.
