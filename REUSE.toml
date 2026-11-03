@@ -46,6 +46,8 @@ SPDX-License-Identifier = "GPL-2.0-or-later"
 [[annotations]]
 path = [
  "linux-7.2.defconfig",
+ "linux-hwdebug.config",
+ "br-patches/**",
  "patches/**"
 ]
 precedence = "override"
