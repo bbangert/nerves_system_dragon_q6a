@@ -19,5 +19,8 @@ erl_crash.dump
 # Ignore our generated files
 /build.log
 /archive.log
-/.nerves
 /test_src/venus_dec_smoke
+
+# Nerves system artifacts
+/.nerves/
+*.tar.gz
