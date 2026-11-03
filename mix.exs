@@ -1,10 +1,9 @@
-defmodule NervesSystemDragonQ6a.MixProject do
+defmodule NervesSystemQ6a.MixProject do
   use Mix.Project
 
   @github_organization "bbangert"
-  @app :nerves_system_dragon_q6a
-  @releases_repo "bbangert/nerves_system_vagus"
-  @source_url "https://github.com/#{@releases_repo}"
+  @app :nerves_system_q6a
+  @source_url "https://github.com/#{@github_organization}/#{@app}"
   @version Path.join(__DIR__, "VERSION")
            |> File.read!()
            |> String.trim()
@@ -13,7 +12,8 @@ defmodule NervesSystemDragonQ6a.MixProject do
     [
       app: @app,
       version: @version,
-      # Because we're using OTP 29, we need to enforce Elixir 1.17 or later.
+      # A loose floor: building against OTP 29 needs a newer Elixir in
+      # practice (CI and .tool-versions pin 1.20.2-otp-29).
       elixir: "~> 1.17",
       compilers: Mix.compilers() ++ [:nerves_package],
       nerves_package: nerves_package(),
@@ -45,7 +45,7 @@ defmodule NervesSystemDragonQ6a.MixProject do
     [
       type: :system,
       artifact_sites: [
-        {:github_releases, @releases_repo}
+        {:github_releases, "#{@github_organization}/#{@app}"}
       ],
       build_runner_opts: build_runner_opts(),
       platform: Nerves.System.BR,
@@ -132,6 +132,7 @@ defmodule NervesSystemDragonQ6a.MixProject do
       "linux-hwdebug.config",
       "mix.exs",
       "nerves_defconfig",
+      "NOTICE",
       "patches",
       "post-build.sh",
       "post-createfs.sh",

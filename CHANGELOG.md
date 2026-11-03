@@ -1,9 +1,43 @@
 # Changelog
 
-Headings are this target's `VERSION`. Git tags are repo-wide and can differ;
-an entry names its repo tag where it does.
+## v0.1.0
 
-## v0.7.0
+Initial release, extracted from bbangert/nerves_system_vagus `dragon_q6a/`
+at 30129cf (its v0.7.0 line: nerves_system_br 1.35.3 / Buildroot 2026.08.1 /
+Erlang/OTP 29.1.2 / toolchain 15.3.1 / Linux 7.2.10 + 4 patches) as a
+product-neutral board system: mainline kernel with the in-tree Dragon Q6A
+devicetree, EDK2 UEFI → GRUB2 arm64-efi boot with A/B squashfs slots on NVMe
+or UFS, the onboard AIC8800D80 WiFi/BT driver and firmware, wpa_supplicant
+and wireless-regdb, the Realtek USB BT dongle firmware, the Hexagon NPU/DSP
+userland (fastrpc, the matched CDSP/ADSP firmware set, udev rules), the
+Adreno render node, the hardware-debug kernel fragment, `tools/mk_ufs_image.py`
+and the EDL flashing runbook (`docs/flashing.md`).
+
+* `external.mk`, `post-build.sh` and `post-createfs.sh` locate this system's
+  files relative to themselves, so it also works vendored under a product's
+  `base/` directory. `post-build.sh` prefers a `grub.cfg` next to the
+  product's `nerves_defconfig`.
+
+Not carried over (product layer, see nerves_system_vagus): BlueZ + D-Bus
+userland and `/etc/bluetooth/main.conf`; the podman container stack (crun,
+netavark, podman, conmon, catatonit, containers-image-config, nftables,
+util-linux); nfs-utils; the `linux-bluetooth.config`,
+`linux-containers.config` and `linux-memory.config` kernel fragments;
+`/etc/sysctl.conf`; the configfs and cgroup2 mounts in `erlinit.config`; and
+the `/etc/resolv.conf` → `/run/resolv.conf` symlink. `grub.cfg` keeps
+`cgroup_no_v1=all cgroup_enable=memory`, which is harmless without them.
+
+Layered back under nerves_system_vagus `dragon_q6a` it is build-identical to
+v0.7.0 (resolved Buildroot and kernel `.config`s), so the hardware proofs
+carry over. Those proofs were taken on the nerves_system_br 1.34.4 /
+toolchain 15.3.0 line; see `docs/validation.md`.
+
+## History (as nerves_system_vagus dragon_q6a)
+
+Headings are that target's `VERSION`; repo tags there could differ, and an
+entry names its repo tag where it does.
+
+### v0.7.0
 
 Repo tag v0.8.0. nerves_system_br and toolchain update. No kernel or
 configuration change on this target. Build-proof only so far: hardware
@@ -14,7 +48,7 @@ validation is pending.
   and brings glibc 2.44, go 1.26.6 and linux-firmware 20260410 → 20260810.
 * Toolchain `nerves_toolchain_aarch64_nerves_linux_gnu` 15.3.0 → 15.3.1.
 
-## v0.6.1
+### v0.6.1
 
 Repo tag v0.7.0.
 
@@ -34,7 +68,7 @@ userspace (Mesa) is shipped, so nothing renders yet.
   requested name at the first `.`, so `qcom,adreno-635.0` never matched and
   msm never autoloaded; affects any devicetree compatible with a version dot.
 
-## v0.6.0
+### v0.6.0
 
 Hardware-debug device classes for the agent-dev-board flavor of Vagus, which
 runs hardware tasks in containers: a container brings its own userland, but
@@ -53,7 +87,7 @@ only the host kernel can expose a probe, dongle or bus as a device.
   udev, which this system does not ship. The `usbip-core`/`usbip-host`
   modules are present; `usbipd` runs from a privileged container.
 
-## v0.5.0
+### v0.5.0
 
 podman replaces balenaEngine as the container engine, and nftables replaces
 iptables. Build-proof only so far: the device gates (migration from
@@ -90,7 +124,7 @@ to podman.
   balenaEngine's selects: `mount`, `swapon`, `mkswap`, `mountpoint` and
   `pivot_root` stay, and `nsenter` is added. `cgroupfs-mount` is gone.
 
-## v0.4.0
+### v0.4.0
 
 Kernel 7.2, and with it the onboard radio driver, fastrpc, balenaEngine and
 `nerves_system_br`. Validated on hardware 2026-10-12 on a UFS and an NVMe
@@ -142,7 +176,7 @@ advertising/GATT, and the QAIRT host recipe.
 * Patch `0003` header corrected: commit `3929d18a1aaa` is from Radxa's
   kernel tree, not mainline (the v0.3.0 entry below calls it upstream).
 
-## v0.3.3
+### v0.3.3
 
 Repo tag v0.3.4.
 
@@ -194,7 +228,7 @@ the tag. Closes #18 (kernel half).
   removed — it depends on the backing (150 on zram boards, 10 on
   swapfile+zswap boards) and is now set at runtime by `Vagus.Host.Swap`.
 
-## v0.3.2
+### v0.3.2
 
 Repo tag v0.3.3.
 
@@ -216,7 +250,7 @@ overrides.
   silently override them -- fwup's plain `define()` loses to any exported
   env var of the same name.
 
-## v0.3.1
+### v0.3.1
 
 Radxa 25W PoE+ HAT fan support (kernel-automatic, both storage variants),
 and a critical fix for fresh flashes.
@@ -239,7 +273,7 @@ and a critical fix for fresh flashes.
 * `CONFIG_SENSORS_GPIO_FAN` m -> y (no module-load dependency for a
   thermal safety device).
 
-## v0.3.0
+### v0.3.0
 
 UFS storage support, device-proven end to end (128 GB module: provisioning,
 EDL flash, boot, ethernet, /data at full module size on first boot, A/B OTA
@@ -266,7 +300,7 @@ device-proven in this release, while NVMe re-validation of this exact build
   for blank modules (armbian/qcombin XML), capacity probing, two-piece
   flash flow, first-boot differences.
 
-## v0.2.0
+### v0.2.0
 
 Container runtime support, bringing this board to rpi3_64 parity as a Vagus
 target. Kernel-config change on a previously-working board — the merged
@@ -317,7 +351,7 @@ target and the container runtime first shipped:
 * Firmware: `rtl_nic/rtl8168h-2.fw` and the board audio topology at the
   `qcom/qcs6490/` request path.
 
-## v0.1.0
+### v0.1.0
 
 Initial release.
 
