@@ -1,4 +1,4 @@
-From: Vagus build <vagus@nabucasa.com>
+From: Ben Bangert <ben@groovie.org>
 Subject: [PATCH] arm64: dts: qcom: qcs6490-radxa-dragon-q6a: PoE+ HAT fan on GPIO_56
 
 Disable spi14 (its qup16 pin group claims GPIO_56 = header pin 33, the

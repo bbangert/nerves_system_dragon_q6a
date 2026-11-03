@@ -59,9 +59,9 @@ Two differences from U-Boot-based Nerves systems:
 ## Hardware support
 
 All proofs were taken on the nerves_system_br 1.34.4 / toolchain 15.3.0
-line, while this system was the `dragon_q6a` target of nerves_system_vagus;
-the 1.35.3 / 15.3.1 move is build-proof only until re-gated. Evidence for
-every row is in [docs/validation.md](docs/validation.md).
+line, while this system was the `dragon_q6a` target of nerves_system_vagus
+(the 1.35.3 / 15.3.1 move is build-proof only until re-gated); the evidence
+for every row is in [docs/validation.md](docs/validation.md).
 
 | Feature | Status | Notes |
 | --- | --- | --- |
@@ -80,7 +80,7 @@ every row is in [docs/validation.md](docs/validation.md).
 | 40-pin GPIO/I2C/SPI/UART header | Untested | Debug UART only; no Circuits.* proof recorded |
 | PCIe / M.2 NVMe | Yes | One of the two proven boot disks |
 | UFS module | Yes | Proven 2026-08-02 and 2026-10-12 (kernel patches 0002/0003 required) |
-| NPU / DSP (Hexagon v68 via fastrpc) | Yes | `fastrpc_test -a v68` 3/3 and QNN inference on the DSP from a container, 2026-10-12; the QAIRT 2.48 yolov11 host recipe was last validated on kernel 7.1.4. See [docs/ai-foundation.md](docs/ai-foundation.md) |
+| NPU / DSP (Hexagon v68 via fastrpc) | Yes | `fastrpc_test -a v68` 3/3 and QNN inference on the DSP from a container, 2026-10-12; the QAIRT 2.48 yolov11 host recipe was last validated on kernel 7.1.4. See [docs/ai-foundation.md](docs/ai-foundation.md); the app starts the fastrpc daemons ([docs/dsp-supervision.md](docs/dsp-supervision.md)) |
 | Video codec (Venus) | Partial | Decoder 30/30 frames 2026-10-12 (`test_src/venus_dec_smoke`); encoder untested |
 | MIPI CSI / DSI | No | Not brought up |
 | microSD | Untested | Enabled in the DTS; not used by this system |

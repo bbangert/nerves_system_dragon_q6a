@@ -30,9 +30,9 @@ LBA math, so it would corrupt a 4Kn GPT; running it on a UFS-flashed board is
 disallowed, and generation-time sizing here replaces it.
 
 Usage:
-    mk_ufs_image.py --input dragon_q6a.img --disk-bytes 128G --out dragon_q6a_ufs
-    mk_ufs_image.py --input dragon_q6a.img --disk-bytes 137438953472 \
-        --out dragon_q6a_ufs --full
+    mk_ufs_image.py --input q6a.img --disk-bytes 128G --out q6a_ufs
+    mk_ufs_image.py --input q6a.img --disk-bytes 137438953472 \
+        --out q6a_ufs --full
 
 Default output (two pieces, for edl-ng's write-sector):
     <out>.img              MBR + primary GPT + the source's partition data,

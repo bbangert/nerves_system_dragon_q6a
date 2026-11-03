@@ -40,19 +40,24 @@ jobs:
 
       - run: mix deps.get
 
-      # `mix nerves.system.lint` from this project falls back to compiling the
-      # project, which is the whole Buildroot build, so the linter is compiled
-      # on its own and run directly. It always exits 0, hence the grep.
-      # BR2_GLOBAL_PATCH_DIR is expected to fail: it adds br-patches/ (the
-      # busybox modalias fix) to the value the rule wants verbatim.
+      # Run from the linter's own project: from the root, Nerves first tries
+      # to build this system (no artifact exists yet), i.e. a full Buildroot
+      # build. MIX_ENV=test skips the linter's dev-only deps. Given just a
+      # defconfig path the task exits 0 even when checks fail, so the
+      # "Failed checks:" section is grepped instead.
+      # BR2_GLOBAL_PATCH_DIR always fails: it appends br-patches/ (the busybox
+      # modalias fix) to the exact value the rule wants.
       - name: Lint nerves_defconfig
+        working-directory: deps/nerves_system_linter
+        env:
+          MIX_ENV: test
         run: |
-          (cd deps/nerves_system_linter && MIX_ENV=test mix compile)
-          out=$(elixir -pa deps/nerves_system_linter/_build/test/lib/nerves_system_linter/ebin \
-            -e 'Mix.start(); Mix.Tasks.Nerves.System.Lint.run(["nerves_defconfig"])')
+          out=$(mix nerves.system.lint "$GITHUB_WORKSPACE/nerves_defconfig")
           echo "$out"
-          failed=$(echo "$out" | sed -n '/^Failed checks:/,$p' | grep '^ensure' | grep -v 'BR2_GLOBAL_PATCH_DIR' || true)
+          failed=$(echo "$out" | sed -n '/^Failed checks:/,$p' | grep '^ensure' |
+            grep -v '^ensure_value: BR2_GLOBAL_PATCH_DIR: ' || true)
           test -z "$failed"
+
 
       - run: shellcheck post-build.sh post-createfs.sh
 

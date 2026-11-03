@@ -1,4 +1,4 @@
-# dragon_q6a kernel config (Radxa Dragon Q6A, QCS6490)
+# Dragon Q6A kernel config (Radxa Dragon Q6A, QCS6490)
 #
 # Derived from mainline arch/arm64/configs/defconfig (v7.1) with:
 #  - non-Qualcomm platform selections removed (ARCH_* and vendor-namespaced
@@ -1213,6 +1213,8 @@ CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
 CONFIG_DEBUG_INFO_REDUCED=y
 CONFIG_MAGIC_SYSRQ=y
 CONFIG_DEBUG_FS=y
+# Reboot on panic rather than hang headless; the watchdog is only a backstop.
+CONFIG_PANIC_TIMEOUT=10
 # CONFIG_SCHED_DEBUG is not set
 # CONFIG_DEBUG_PREEMPT is not set
 # CONFIG_FTRACE is not set
@@ -1226,7 +1228,7 @@ CONFIG_CORESIGHT_CPU_DEBUG=m
 CONFIG_CORESIGHT_CTI=m
 CONFIG_MEMTEST=y
 
-# ---- dragon_q6a additions (not present in arm64 defconfig) ----
+# Q6A additions, not present in arm64 defconfig.
 # PCIe QMP phy sub-drivers follow CONFIG_PHY_QCOM_QMP (=y above); listed
 # explicitly so a Kconfig default change can't silently drop them.
 CONFIG_PHY_QCOM_QMP_PCIE=y
@@ -1248,7 +1250,7 @@ CONFIG_QCOM_PD_MAPPER=m
 # loads once Erlang is up (nerves_uevent runs modprobe); the 10 s default
 # gives up first (arm-smmu 3da0000.iommu -110) and the SMMU driver refuses a
 # later rebind, so the GPU is dead for the whole boot. Same value as
-# Qualcomm's qcom.config and the rubik_pi3 target.
+# Qualcomm's qcom.config and nerves_system_rubik.
 CONFIG_DRIVER_DEFERRED_PROBE_TIMEOUT=60
 
 # Mainline 7.2 defaults nearly every Qualcomm TLMM pinctrl driver to y
